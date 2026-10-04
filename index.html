@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+    <title>🤖 Job Form Auto Filler</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ================================ -->
+    <!-- HEADER                           -->
+    <!-- ================================ -->
+    <div class="header">
+        <div class="header-left">
+            <span class="logo">🤖</span>
+            <span class="app-title">Job Form Auto Filler</span>
+        </div>
+        <div class="header-right">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">
+                Connecting...
+            </span>
+        </div>
+    </div>
+
+    <!-- ================================ -->
+    <!-- TAB NAVIGATION                   -->
+    <!-- ================================ -->
+    <div class="tab-nav">
+        <button class="tab-btn active" 
+                onclick="showTab('profile')">
+            👤 My Profile
+        </button>
+        <button class="tab-btn" 
+                onclick="showTab('fillform')">
+            🔗 Fill Form
+        </button>
+        <button class="tab-btn" 
+                onclick="showTab('logins')">
+            🔑 Saved Logins
+        </button>
+        <button class="tab-btn" 
+                onclick="showTab('screenshots')">
+            📸 Screenshots
+        </button>
+        <button class="tab-btn" 
+                onclick="showTab('settings')">
+            ⚙️ Settings
+        </button>
+    </div>
+
+    <!-- ================================ -->
+    <!-- TAB CONTENTS                     -->
+    <!-- ================================ -->
+    <div class="tab-content">
+
+        <!-- PROFILE TAB -->
+        <div id="tab-profile" class="tab-pane active">
+
+            <!-- Profile Selector -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>👤 My Profiles</h3>
+                </div>
+                <div class="profile-selector">
+                    <label>Select Profile:</label>
+                    <select id="profileDropdown" 
+                            onchange="loadProfile()">
+                    </select>
+                    <button class="btn btn-green" 
+                            onclick="newProfile()">
+                        ➕ New
+                    </button>
+                    <button class="btn btn-blue" 
+                            onclick="duplicateProfile()">
+                        📋 Duplicate
+                    </button>
+                    <button class="btn btn-red" 
+                            onclick="deleteProfile()">
+                        🗑️ Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Form -->
+            <div class="card">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Profile Name</label>
+                        <input type="text" 
+                               id="profileName"
+                               placeholder="e.g. Software Developer">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" 
+                               id="fullName"
+                               placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" 
+                               id="email"
+                               placeholder="john@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" 
+                               id="phone"
+                               placeholder="9999999999">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Address</label>
+                        <input type="text" 
+                               id="address"
+                               placeholder="Chennai, Tamil Nadu">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>LinkedIn URL</label>
+                        <input type="text" 
+                               id="linkedinUrl"
+                               placeholder="linkedin.com/in/johndoe">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Experience</label>
+                        <textarea id="experience" 
+                                  rows="3"
+                                  placeholder="2 years Java developer...">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Skills</label>
+                        <textarea id="skills" 
+                                  rows="3"
+                                  placeholder="Java, Spring Boot, MySQL...">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Education</label>
+                        <textarea id="education" 
+                                  rows="3"
+                                  placeholder="B.Tech Computer Science...">
+                        </textarea>
+                    </div>
+
+                    <!-- File Uploads -->
+                    <div class="form-group full-width">
+                        <label>Resume (PDF)</label>
+                        <div class="file-input-group">
+                            <input type="text" 
+                                   id="resumePath"
+                                   placeholder="C:/resumes/resume.pdf"
+                                   readonly>
+                            <button class="btn btn-blue"
+                                    onclick="browseFile('resumePath')">
+                                📁 Browse
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Cover Letter (PDF)</label>
+                        <div class="file-input-group">
+                            <input type="text" 
+                                   id="coverLetterPath"
+                                   placeholder="C:/resumes/coverletter.pdf"
+                                   readonly>
+                            <button class="btn btn-blue"
+                                    onclick="browseFile('coverLetterPath')">
+                                📁 Browse
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Photo (JPG/PNG)</label>
+                        <div class="file-input-group">
+                            <input type="text" 
+                                   id="photoPath"
+                                   placeholder="C:/photos/photo.jpg"
+                                   readonly>
+                            <button class="btn btn-blue"
+                                    onclick="browseFile('photoPath')">
+                                📁 Browse
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="isDefault">
+                            Set as Default Profile
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn btn-primary btn-large"
+                            onclick="saveProfile()">
+                        💾 SAVE PROFILE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILL FORM TAB -->
+        <div id="tab-fillform" class="tab-pane">
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔗 Fill Job Form</h3>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label>Select Profile</label>
+                        <select id="fillProfileDropdown">
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Job Form URL</label>
+                        <input type="url" 
+                               id="formUrl"
+                               placeholder="https://company.com/apply/job123">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Browser</label>
+                        <select id="browser">
+                            <option value="CHROME">Chrome</option>
+                            <option value="FIREFOX">Firefox</option>
+                            <option value="EDGE">Edge</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Options</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" 
+                                       id="autoSubmit">
+                                Auto Submit Form
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" 
+                                       id="headlessMode">
+                                Run Headless
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn btn-primary btn-large"
+                            onclick="startFilling()"
+                            id="startBtn">
+                        🚀 START FILLING FORM
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Log -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Status Log</h3>
+                    <button class="btn btn-small"
+                            onclick="clearLog()">
+                        🗑️ Clear
+                    </button>
+                </div>
+                <div class="log-container" id="statusLog">
+                    <div class="log-placeholder">
+                        Status will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAVED LOGINS TAB -->
+        <div id="tab-logins" class="tab-pane">
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔑 Saved Company Logins</h3>
+                </div>
+
+                <!-- Add New Login -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" 
+                               id="loginCompany"
+                               placeholder="Amazon">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Portal URL</label>
+                        <input type="text" 
+                               id="loginUrl"
+                               placeholder="amazon.jobs">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" 
+                               id="loginEmail"
+                               placeholder="john@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" 
+                               id="loginPassword"
+                               placeholder="••••••••">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                   id="isWorkday">
+                            Is Workday Form?
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn btn-primary"
+                            onclick="saveLogin()">
+                        💾 SAVE LOGIN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Logins Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Saved Logins</h3>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Portal URL</th>
+                                <th>Email</th>
+                                <th>Workday</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loginsTable">
+                            <tr>
+                                <td colspan="5" 
+                                    class="empty-row">
+                                    No logins saved yet
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREENSHOTS TAB -->
+        <div id="tab-screenshots" class="tab-pane">
+            <div class="card">
+                <div class="card-header">
+                    <h3>📸 Screenshots</h3>
+                    <button class="btn btn-blue"
+                            onclick="openScreenshotsFolder()">
+                        📂 Open Folder
+                    </button>
+                </div>
+                <div class="screenshots-grid" 
+                     id="screenshotsGrid">
+                    <div class="empty-state">
+                        No screenshots yet
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="tab-settings" class="tab-pane">
+            <div class="card">
+                <div class="card-header">
+                    <h3>⚙️ Settings</h3>
+                </div>
+
+                <div class="form-grid">
+
+                    <!-- Telegram Settings -->
+                    <div class="form-group full-width">
+                        <div class="section-title">
+                            📱 Telegram Notifications
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                   id="telegramEnabled">
+                            Enable Telegram Notifications
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bot Token</label>
+                        <input type="text" 
+                               id="telegramToken"
+                               placeholder="123456:ABCdef...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chat ID</label>
+                        <input type="text" 
+                               id="telegramChatId"
+                               placeholder="123456789">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <button class="btn btn-blue"
+                                onclick="testTelegram()">
+                            🧪 Test Telegram Bot
+                        </button>
+                        <span id="telegramTestResult"></span>
+                    </div>
+
+                    <!-- Browser Settings -->
+                    <div class="form-group full-width">
+                        <div class="section-title">
+                            🌐 Browser Settings
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Default Browser</label>
+                        <select id="defaultBrowser">
+                            <option value="CHROME">Chrome</option>
+                            <option value="FIREFOX">Firefox</option>
+                            <option value="EDGE">Edge</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Form Fill Delay (seconds)</label>
+                        <input type="number" 
+                               id="formFillDelay"
+                               value="1" min="1" max="5">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                   id="headlessModeSettings">
+                            Run Headless (no browser window)
+                        </label>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                   id="autoSubmitSettings">
+                            Auto Submit Form
+                        </label>
+                    </div>
+
+                    <!-- File Paths -->
+                    <div class="form-group full-width">
+                        <div class="section-title">
+                            📁 File Paths
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Screenshots Path</label>
+                        <div class="file-input-group">
+                            <input type="text" 
+                                   id="screenshotPath"
+                                   placeholder="C:/jobfiller/screenshots">
+                            <button class="btn btn-blue"
+                                    onclick="browseFolder('screenshotPath')">
+                                📁 Browse
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Error Logs Path</label>
+                        <div class="file-input-group">
+                            <input type="text" 
+                                   id="errorLogPath"
+                                   placeholder="C:/jobfiller/logs">
+                            <button class="btn btn-blue"
+                                    onclick="browseFolder('errorLogPath')">
+                                📁 Browse
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn btn-primary btn-large"
+                            onclick="saveSettings()">
+                        💾 SAVE SETTINGS
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================================ -->
+    <!-- NOTIFICATION TOAST               -->
+    <!-- ================================ -->
+    <div class="toast" id="toast"></div>
+
+   
+
+   <script src="js/api.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/formfiller.js"></script>
+    <script src="js/logins.js"></script>
+    <script src="js/screenshots.js"></script>
+    <script src="js/settings.js"></script>
+
+    <script>
+        window.onload = () => {
+            // Check if functions exist before calling to prevent white-screen crashes
+            if (typeof loadProfiles === 'function') loadProfiles();
+            if (typeof loadProfilesForFillForm === 'function') loadProfilesForFillForm();
+        };
+    </script>
+</body>
+</html>
